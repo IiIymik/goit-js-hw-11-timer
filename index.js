@@ -11,15 +11,15 @@ class CountdownTimer{
     this.intervalId = setInterval(() => {
       const currentTime = new Date().getTime();
 
-      const time = countDownDate - currentTime;
+      const deltaTime = countDownDate - currentTime;
       
-      const timer = this.getTimeComponents(time);
+      const time = this.getTimeComponents(deltaTime);
 
-      this.updateClockface(timer);
+      this.updateClockface(time);
       
-      if (time < 0) {
+      if (deltaTime < 0) {
       clearInterval(this.intervalId);
-        console.log("Время истекло");
+        console.log("Countdown End");
       
   }
     }, 1000)
@@ -40,9 +40,9 @@ class CountdownTimer{
   updateClockface(time) {
     const { days, hours, mins, secs } = time
   
-    const divEl = document.querySelector(this.selector).querySelectorAll('.value');
+    const changeEl = document.querySelector(this.selector).querySelectorAll('.value');
   
-    divEl.forEach((data) => {
+    changeEl.forEach((data) => {
       const updateSpan = data.dataset.value;
       
       switch (updateSpan) {
@@ -63,9 +63,9 @@ class CountdownTimer{
   }
 }
 
-const newDayBack = new CountdownTimer({
+const newCountdown = new CountdownTimer({
   selector: '#timer-1',
   targetDate: new Date('May 05, 2021'),
 });
 
-newDayBack.start();  
+newCountdown.start();  
