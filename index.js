@@ -1,29 +1,75 @@
-/*
- * Оставшиеся дни: делим значение UTC на 1000 * 60 * 60 * 24, количество
- * миллисекунд в одном дне (миллисекунды * секунды * минуты * часы)
- */
-const days = Math.floor(time / (1000 * 60 * 60 * 24));
+const refs = {
+  dateInput: document.querySelectorAll('[data-value]'),
+};
 
-/*
- * Оставшиеся часы: получаем остаток от предыдущего расчета с помощью оператора
- * остатка % и делим его на количество миллисекунд в одном часе
- * (1000 * 60 * 60 = миллисекунды * минуты * секунды)
- */
-const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+console.log(refs.dateInput)
 
-/*
- * Оставшиеся минуты: получаем оставшиеся минуты и делим их на количество
- * миллисекунд в одной минуте (1000 * 60 = миллисекунды * секунды)
- */
-const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+class CountdownTimer{
+  constructor() {
+    this.intervalId = null,
+      this.isActive = false
+  }
+  
+  start() {
+    if (this.isActive) {
+      return;
+    }
+    const startTime = Date.now();
+    this.isActive = true;
 
-/*
- * Оставшиеся секунды: получаем оставшиеся секунды и делим их на количество
- * миллисекунд в одной секунде (1000)
- */
-const secs = Math.floor((time % (1000 * 60)) / 1000);
+    this.intervalId = setInterval(() => {
+      const currentTime = Date.now();
+      const deltaTime = currentTime - startTime;
+      const time = getTimeComponents(deltaTime);
+      updateClockface(time)
+    }, 1000);
+  }
 
-new CountdownTimer({
+  stop() {
+    clearInterval(this.intervalId);
+    this.isActive = false;
+  }
+}
+
+const newDayBack = new CountdownTimer({
+  update: updateClockface(),
   selector: '#timer-1',
   targetDate: new Date('Jul 17, 2019'),
 });
+
+// newDayBack.start()
+
+function getTimeComponents(time) {
+  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+  const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+  return { days, hours, mins, secs };
+}
+
+function pad(value) {
+  return String(value).padStart(2, "0");
+}
+
+function updateClockface({ days, hours, mins, secs }) {
+  refs.dateInput.forEach((data, { days, hours, mins, secs }) => {
+    const updateSpan = data.dataset.value;
+    switch (updateSpan) {
+      case days:
+        data.textContent = days;
+        break;
+      case hours:
+        data.textContent = hours;
+        break;
+      case mins:
+        data.textContent = mins;
+        break;
+      case secs:
+        data.textContent = days;
+        break;
+    }
+  })
+// console.log(refs.dateInput)
+}
+
+updateClockface(getTimeComponents())
