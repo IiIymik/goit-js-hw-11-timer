@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  justify-content: center;
+  background-color: grey;
+  font-family: "Montserrat", sans-serif;
+}
+.timer {
+  display: flex;
+}
+
+.timer .field {
+  margin-top: 20%;
+  margin-left: 20px;
+}
+
+.value {
+  color: azure;
+  font-size: 100px;
+  font-weight: bold;
+}
+
+.label {
+  color: azure;
+  font-size: 30px;
+}
