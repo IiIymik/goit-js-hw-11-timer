@@ -39,9 +39,11 @@ class CountdownTimer{
   
   updateClockface(time) {
     const { days, hours, mins, secs } = time
-  
-    const changeEl = document.querySelector(this.selector).querySelectorAll('.value');
-  
+   
+    const changeEl = document.querySelector(this.selector);
+    const spanEl = document.querySelectorAll('.value');
+    console.log(spanEl)
+  console.log(changeEl)
     changeEl.forEach((data) => {
       const updateSpan = data.dataset.value;
       
